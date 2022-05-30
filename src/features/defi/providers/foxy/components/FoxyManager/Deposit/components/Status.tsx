@@ -28,11 +28,11 @@ export const Status = ({ apy }: FoxyStatusProps) => {
   const { state } = useContext(DepositContext)
   const history = useHistory()
   const { query, history: browserHistory } = useBrowserRouter<DefiQueryParams, DefiParams>()
-  const { chain, tokenId, rewardId } = query
+  const { chain, assetReference, rewardId } = query
   const chainId = chainTypeToMainnetChainId(chain)
   const assetNamespace = 'erc20'
   const defaultStatusBg = useColorModeValue('white', 'gray.700')
-  const assetId = toAssetId({ chainId, assetNamespace, assetReference: tokenId })
+  const assetId = toAssetId({ chainId, assetNamespace, assetReference })
   const feeAssetId = toAssetId({
     chainId,
     assetNamespace: 'slip44',

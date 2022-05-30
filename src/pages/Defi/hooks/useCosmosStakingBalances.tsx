@@ -22,7 +22,6 @@ export type UseCosmosStakingBalancesReturn = {
 
 export type MergedActiveStakingOpportunity = ActiveStakingOpportunity & {
   fiatAmount?: string
-  tokenAddress: string
   assetId: AssetId
   chain: ChainTypes
   tvl: string
@@ -73,7 +72,6 @@ export function useCosmosStakingBalances({
         fiatAmount,
         chain: asset.chain,
         assetId,
-        tokenAddress: asset.slip44.toString(),
       }
       return data
     })

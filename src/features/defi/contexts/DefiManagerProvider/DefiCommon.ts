@@ -29,7 +29,7 @@ export type DefiParams = {
 export type DefiQueryParams = {
   chain: ChainTypes
   contractAddress: string
-  tokenId: string
+  assetReference: string
   rewardId: string
 }
 

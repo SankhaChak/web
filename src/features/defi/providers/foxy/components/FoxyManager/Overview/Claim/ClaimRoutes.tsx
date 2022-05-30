@@ -27,13 +27,13 @@ type ClaimRouteProps = {
 
 export const ClaimRoutes = ({ onBack }: ClaimRouteProps) => {
   const { query } = useBrowserRouter<DefiQueryParams, DefiParams>()
-  const { contractAddress, tokenId, chain } = query
+  const { contractAddress, assetReference, chain } = query
   const chainId = chainTypeToMainnetChainId(chain)
   const assetNamespace = 'erc20'
   const stakingAssetId = toAssetId({
     chainId,
     assetNamespace,
-    assetReference: tokenId,
+    assetReference,
   })
   const { opportunities } = useFoxyBalances()
   const opportunity = opportunities.find(e => e.contractAddress === contractAddress)

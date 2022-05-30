@@ -32,7 +32,7 @@ export const Confirm = ({ api }: YearnConfirmProps) => {
   const translate = useTranslate()
   const history = useHistory()
   const { query, history: browserHistory } = useBrowserRouter<DefiQueryParams, DefiParams>()
-  const { chain, contractAddress: vaultAddress, tokenId } = query
+  const { chain, contractAddress: vaultAddress, assetReference } = query
 
   const chainId = chainTypeToMainnetChainId(chain)
   const assetNamespace = 'erc20'
@@ -40,7 +40,7 @@ export const Confirm = ({ api }: YearnConfirmProps) => {
   const underlyingAssetId = toAssetId({
     chainId,
     assetNamespace,
-    assetReference: tokenId,
+    assetReference,
   })
   const underlyingAsset = useAppSelector(state => selectAssetById(state, underlyingAssetId))
   const assetId = toAssetId({
@@ -64,11 +64,11 @@ export const Confirm = ({ api }: YearnConfirmProps) => {
 
   const handleConfirm = async () => {
     try {
-      if (!state.userAddress || !tokenId || !walletState.wallet) return
+      if (!state.userAddress || !assetReference || !walletState.wallet) return
       dispatch({ type: YearnWithdrawActionType.SET_LOADING, payload: true })
       const [txid, gasPrice] = await Promise.all([
         api.withdraw({
-          tokenContractAddress: tokenId,
+          tokenContractAddress: assetReference,
           userAddress: state.userAddress,
           vaultAddress,
           wallet: walletState.wallet,

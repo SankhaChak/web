@@ -10,6 +10,7 @@ import {
   StatNumber,
   useColorModeValue,
 } from '@chakra-ui/react'
+import { fromAssetId } from '@shapeshiftoss/caip'
 import { ChainTypes } from '@shapeshiftoss/types'
 import { DefiType } from 'features/defi/contexts/DefiManagerProvider/DefiCommon'
 import { EarnOpportunityType } from 'features/defi/helpers/normalizeOpportunity'
@@ -31,7 +32,6 @@ type OpportunityCardProps = {
 
 export const OpportunityCard = ({
   type,
-  tokenAddress,
   rewardAddress,
   contractAddress,
   provider,
@@ -50,6 +50,7 @@ export const OpportunityCard = ({
   const asset = useAppSelector(state => selectAssetById(state, assetId))
   const { cosmosStaking } = useModal()
   const isCosmosStaking = chain === ChainTypes.Cosmos
+  const { assetReference } = fromAssetId(assetId)
 
   const {
     state: { isConnected },
@@ -78,7 +79,7 @@ export const OpportunityCard = ({
         search: qs.stringify({
           chain,
           contractAddress,
-          tokenId: tokenAddress,
+          assetReference,
           rewardId: rewardAddress,
         }),
         state: { background: location },

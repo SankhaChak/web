@@ -41,11 +41,11 @@ export const YearnDeposit = ({ api }: YearnDepositProps) => {
   const translate = useTranslate()
   const toast = useToast()
   const { query } = useBrowserRouter<DefiQueryParams, DefiParams>()
-  const { chain, contractAddress: vaultAddress, tokenId } = query
+  const { chain, contractAddress: vaultAddress, assetReference } = query
 
   const chainId = chainTypeToMainnetChainId(chain)
   const assetNamespace = 'erc20'
-  const assetId = toAssetId({ chainId, assetNamespace, assetReference: tokenId })
+  const assetId = toAssetId({ chainId, assetNamespace, assetReference })
   const asset = useAppSelector(state => selectAssetById(state, assetId))
   const marketData = useAppSelector(state => selectMarketDataById(state, assetId))
 
@@ -78,11 +78,11 @@ export const YearnDeposit = ({ api }: YearnDepositProps) => {
   }, [api, chainAdapter, vaultAddress, walletState.wallet])
 
   const getDepositGasEstimate = async (deposit: DepositValues) => {
-    if (!state.userAddress || !tokenId) return
+    if (!state.userAddress || !assetReference) return
     try {
       const [gasLimit, gasPrice] = await Promise.all([
         api.estimateDepositGas({
-          tokenContractAddress: tokenId,
+          tokenContractAddress: assetReference,
           amountDesired: bnOrZero(deposit.cryptoAmount)
             .times(`1e+${asset.precision}`)
             .decimalPlaces(0),

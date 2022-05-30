@@ -35,7 +35,7 @@ export const YearnWithdraw = ({ api }: YearnWithdrawProps) => {
   const [state, dispatch] = useReducer(reducer, initialState)
   const location = useLocation()
   const { query } = useBrowserRouter<DefiQueryParams, DefiParams>()
-  const { chain, contractAddress: vaultAddress, tokenId } = query
+  const { chain, contractAddress: vaultAddress, assetReference } = query
 
   const chainId = chainTypeToMainnetChainId(chain)
   const assetNamespace = 'erc20'
@@ -43,7 +43,7 @@ export const YearnWithdraw = ({ api }: YearnWithdrawProps) => {
   const underlyingAssetId = toAssetId({
     chainId,
     assetNamespace,
-    assetReference: tokenId,
+    assetReference,
   })
   const assetId = toAssetId({
     chainId,

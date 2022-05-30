@@ -33,10 +33,10 @@ export const Confirm = ({ api, apy }: FoxyConfirmProps) => {
   const history = useHistory()
   const translate = useTranslate()
   const { query } = useBrowserRouter<DefiQueryParams, DefiParams>()
-  const { chain, contractAddress, tokenId, rewardId } = query
+  const { chain, contractAddress, assetReference, rewardId } = query
   const chainId = chainTypeToMainnetChainId(chain)
   const assetNamespace = 'erc20'
-  const assetId = toAssetId({ chainId, assetNamespace, assetReference: tokenId })
+  const assetId = toAssetId({ chainId, assetNamespace, assetReference })
   const feeAssetId = toAssetId({
     chainId,
     assetNamespace: 'slip44',
@@ -64,14 +64,14 @@ export const Confirm = ({ api, apy }: FoxyConfirmProps) => {
 
   const handleDeposit = async () => {
     try {
-      if (!state.userAddress || !tokenId || !walletState.wallet) return
+      if (!state.userAddress || !assetReference || !walletState.wallet) return
       dispatch({ type: FoxyDepositActionType.SET_LOADING, payload: true })
       const [txid, gasPrice] = await Promise.all([
         api.deposit({
           amountDesired: bnOrZero(state.deposit.cryptoAmount)
             .times(`1e+${asset.precision}`)
             .decimalPlaces(0),
-          tokenContractAddress: tokenId,
+          tokenContractAddress: assetReference,
           userAddress: state.userAddress,
           contractAddress,
           wallet: walletState.wallet,

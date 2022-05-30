@@ -27,7 +27,7 @@ export const FoxyDetails = () => {
     path: '/defi/:earnType/:provider/:action',
     exact: true,
   })
-  const { chain, contractAddress, tokenId, rewardId } = query
+  const { chain, contractAddress, assetReference, rewardId } = query
   const opportunity = opportunities.find(e => e.contractAddress === contractAddress)
   const rewardBalance = bnOrZero(opportunity?.withdrawInfo.amount)
   const foxyBalance = bnOrZero(opportunity?.balance)
@@ -36,7 +36,7 @@ export const FoxyDetails = () => {
   const stakingAssetId = toAssetId({
     chainId,
     assetNamespace,
-    assetReference: tokenId,
+    assetReference,
   })
   const stakingAsset = useAppSelector(state => selectAssetById(state, stakingAssetId))
   const rewardAssetId = toAssetId({
